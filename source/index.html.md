@@ -12,9 +12,8 @@ toc_footers:
 includes:
   - git_branching
   - ci
-  - coding_style
+  - microservices_architecture
   - javaab
-  - errors
 
 search: true
 ---

@@ -1,5 +1,4 @@
 # Git Branching Protocol
-## Git Branch Cheat Sheet
 
 ## Developer Workflow
 
@@ -12,33 +11,67 @@ For more see the following:
 - [Github Integration](https://tree.taiga.io/support/integrations/github-integration/)
 - [Changing Element Status via Commit Message](https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/)
 
+
 <hr>
+<pre>
+                (TG-<REF> branched off master)
+B_Release       -------------------------------------------->
+                  |                                      /
+master          ----------------------------------------|--->   (master tracks B_Release, and may be updated more frequently than B_Release with new features and bug fixes)
+                   \     :   \       :              /  /        (Release candidate is taken from B_Release/master and eventually merged back in)
+B_ReleaseCandidate  \    :    -------------------------
+                      \      :       :          /               (your successfully tested branch merged to B_ReleaseCandidate)
+TG-<REF>              -+++----+----+------------                    (Update TG-<REF> from master if needed)
+                         \  \  \  \   \     \                   #### NEVER MERGE B_devtest or B_featuretest into other branches #### 
+B_devtest       -------------------|---------|-------------->   (Merge your branch into Continuous Integration (B_devtest) anytime work is at a stable point)
+                                    \ x(fail) \ (pass)
+B_featuretest   -------------------------------------------->   (Your branch gets merged to B_featuretest for testing)
+</pre>
 
-
-- Initially in "Open" status - avoid working on the ticket
-- Ticket will move to "Dev ready" status when available to be picked up and worked on
+### The Flow
+- Ticket when in `"Ready"` status is available to be picked up and worked on. (Note: Task does not have a `"Ready"` status)
 - Pick up the ticket (assign to yourself if not already assigned)
-- Set "Start progress" once work begins in earnest on the ticket
-    - Merging to B_CI is fine at this point
-- When work is completed, set status to "Resolved" with:
-    - Resolution: "Fixed" (or some other suitable status as applicable);
-    - Documentation: set if required (for customers' info, e.g. API change);
-    - "How to Test": to include instructions for a tester where applicable
-- Once in a resolved state:
-    - Must be merged to B_CI
-    - Must be merged to B_FeatureTest
-    - Can arrange with QA for testing: status will change to "In Test"; or
-    - If not going through QA (i.e. testing to be done internally) status can be left unchanged
-- Once testing is complete, status can be changed to "Ready to Release"
+- Create a feature branch by forking the repository under your username and creating a feature branch.
+    - We basically follow the <a href="https://help.github.com/articles/github-flow/">Github Flow</a> (Possibly tag before delete branch maybe)
+- The feature branch should be named based on the taiga.io ticket number (The ticket number should be in the top left)
+    - [Example of taiga.io ticket](https://tree.taiga.io/project/jtarball-mcc/task/77)
+    - It should be of the form: `TG-<TAIGA_TICKET_NUMBER>` e.g. TG-77
+    - Every commit message for this feature branch should start with the branch name e.g. "TG-77"
+- Set taiga.io ticket to `"In Progress"` (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a>)
+    - If taiga.io fails to change because of a fail webhook response set it manually in taiga.io
+    - Merging to **B_devtest** is fine at this point once you are largely happy (you don't necessary have to wait for a code review)
+- When your work is ready to be reviewed (Github refers to this as a pull request in Github)
+    - Click "<a href="https://help.github.com/articles/about-pull-requests/">Create Pull Request</a>" on your github branch
+        - ensure that you are comparing master (main ) with your feature branch (from your fork)
+        - Set the assignee
+        - Set the reviewers (must be at least two people)
+        - In the title remember to start with the branch name i.e. TG-<TAIGA_REF>
+        - Add a comment and add some useful information about the change
+        - When ready, click create pull request
+- When work is completed, reviewed and accepted by all reviewers:
+    - Once in a resolved state:
+        - Must be merged to **B_devtest**
+        - Must be merged to **B_featuretest**
+    - Set `"Ready for test"` in taiga.io
+        - Add #ready-for-test to the commit message (If this fails manually change it in taiga.io)
+        - Do not set to "ready for test" before you have merged to **b_featuretest** 
+    - Documentation: set if required 
+    - Update "How to Test": to include instructions for a tester where applicable
+    - The feature must then go through QA on **B_featuretest**.
+        - If "Documentation update needed" is set in taiga.io ensure the documentation goes through QA
+- Once testing is complete, merge to master and status can be changed to `"Done"` or if a Task to `"Closed"`
 
-> Make sure to replace `meowmeowmeow` with your API key.
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+### Modified Flow for 'Tasks' Only
+<aside class="warning">
+You must have a bigger feature branch for this feature (task) to be merged into.
+</aside>
+<aside class="notice">
+Useful for smaller code review / conversations
+</aside>
+- With taiga.io `tasks` that are part of a complete feature (`User Story`) you can follow the following **MODIFIED** flow:
+    - Create the feature branch as normal based on the task
+    - Create a pull request against **master** repo
+    - Merge into the bigger feature branch (normally going to be the `User Story` Branch)
 
 ### Branch Procedure
 
@@ -87,40 +120,34 @@ Needs Info | `#needs-info` | TF-89 #needs-info | <div class="color-box" style="b
 Rejected | `#rejected` | TF-89 #rejected | <div class="color-box" style="background-color: rgb(211, 215, 207);"></div>
 Postponed | `#postponed` | TF-89 #postponed | <div class="color-box" style="background-color: rgb(117, 80, 123);"></div>
 
+### Quick Step-by-Step
 
+Create your own feature branch from **master**, in the format '**TG-{TAIGA-REF}**'.
 
-```extra
-Epics
+When work is in a stable state, it is merged into **B_devtest** (this can be often).
 
-New new   TF-77 new a very nice commit
+When work is ready for testing, you will be invited to merge your branch into B_featuretest.
 
-User Story
+When testing is complete, your branch will be merged by the ops team into the release candidate branch.
 
-Task 
+Eventually the release candidate branch will be merged into release branch.
 
-Issue
-
-
-```
-
-Create your own feature branch from B_DevBase, in the format 'B_DEV_{JIRA-REF}'. When work is in a stable state, it is merged into B_CI (this can be often). When work is ready for testing, you will be invited to merge your branch into B_FeatureTest. When testing is complete, your branch will be merged by the ops team into the release candidate branch. Eventually the release candidate branch will be merged into release branch.
-
-You must never merge B_CI or B_FeatureTest into your feature branch, or any other branches, and you may only merge your branch into the B_CI branch, unless otherwise invited.
+You must never merge **B_devtest** or **B_featuretest** into your feature branch, or any other branches, and you may only merge your branch into the **B_devtest** branch, unless otherwise invited.
 
 A quick step by step:
 
-1) You should checkout B_DevBase everywhere.
+1) You should checkout **master** everywhere.
 
-2) On the modules you will be changing (eg sportsbook), you should branch for your feature(git checkout -b B_DEV_xxx). The other modules should remain on B_DevBase.
+2) On the services you will be changing, you should branch for your feature (`git checkout -b TG-xxx`). The other modules should remain on **master**.
 
-3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO B_CI.
+3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO **B_devtest**.
 
-4) You should never merge any branch apart from B_DevBase into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in jira for your feature.
+4) You should never merge any branch apart from **master** into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in taiga for your feature.
 
-5) NEVER merge B_CI, B_FeatureTest anywhere.
+5) NEVER merge **B_devtest**, **B_featuretest** anywhere.
 
-6) When you have finished your development, mark it as ready to test/resolved in JIRA.
+6) When you have finished your development, mark it as ready to test/resolved in Taiga.
 
-7) When the time comes, QA will ask you to merge your feature branch into B_FeatureTest and upgrade the feature test database. You should also set jira status to 'testing'.
+7) When the time comes, QA will ask you to merge your feature branch into **master**.
 
-8) If QA find any issues, they must be fixed on the original feature branch B_DEV_xxx and then merged into B_FeatureTest. The reason for this is the feature branch is merged into the release candidate.
+8) If QA find any issues, they must be fixed on the original feature branch TG-xx and then merged into **B_featuretest**. The reason for this is the feature branch is merged into the release candidate.
