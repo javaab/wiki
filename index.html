@@ -283,10 +283,10 @@ B_featuretest   --------------------------------------------&gt;   (Your branch 
 <li>It should be of the form: <code class="prettyprint">TG-&lt;TAIGA_TICKET_NUMBER&gt;</code> e.g. TG-77</li>
 <li>Every commit message for this feature branch should start with the branch name e.g. &ldquo;TG-77&rdquo;</li>
 </ul></li>
-<li>Set taiga.io ticket to <code class="prettyprint">&quot;In Progress&quot;</code> (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a>)
+<li>Set Taiga ticket to <code class="prettyprint">&quot;In Progress&quot;</code> (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a> and <a href="#taiga-cheat-sheet-statuses">Cheat Sheet</a>)
 
 <ul>
-<li>If taiga.io fails to change because of a fail webhook response set it manually in taiga.io</li>
+<li>If Taiga fails to change because of a failed webhook response set it manually in Taiga</li>
 <li>Merging to <strong>B_devtest</strong> is fine at this point once you are largely happy (you don&rsquo;t necessary have to wait for a code review)</li>
 </ul></li>
 <li>When your work is ready to be reviewed (Github refers to this as a pull request in Github)
@@ -295,7 +295,7 @@ B_featuretest   --------------------------------------------&gt;   (Your branch 
 <li>Click &ldquo;<a href="https://help.github.com/articles/about-pull-requests/">Create Pull Request</a>&rdquo; on your github branch
 
 <ul>
-<li>ensure that you are comparing master (main ) with your feature branch (from your fork)</li>
+<li>Ensure that you are comparing master (main ) with your feature branch (from your fork)</li>
 <li>Set the assignee</li>
 <li>Set the reviewers (must be at least two people)</li>
 <li>In the title remember to start with the branch name i.e. TG-<TAIGA_REF></li>
@@ -352,6 +352,10 @@ Useful for smaller code review / conversations
 <h3 id="branch-procedure">Branch Procedure</h3>
 
 <h3 id="taiga-cheat-sheet-statuses">Taiga Cheat Sheet Statuses</h3>
+
+<aside class="notice">Use the following format to change taiga in the commit message:    TF-{REF} #{SLUG} {COMMIT_MESSAGE}</aside>
+
+<aside class="warning">Do not use semi-colons in the commit message if you want to change the status in taiga</aside>
 
 <h3 id="epic">Epic</h3>
 
@@ -468,7 +472,7 @@ Useful for smaller code review / conversations
 <tr>
 <td>Ready for test</td>
 <td><code class="prettyprint">#ready-for-test</code></td>
-<td>TF-89 #ready-for-test another commit</td>
+<td>TF-89 #ready-for-test This is another commit</td>
 <td><div class="color-box" style="background-color: rgb(245, 121, 0);"></div></td>
 </tr>
 <tr>
