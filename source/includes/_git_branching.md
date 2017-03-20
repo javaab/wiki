@@ -37,12 +37,12 @@ B_featuretest   -------------------------------------------->   (Your branch get
     - [Example of taiga.io ticket](https://tree.taiga.io/project/jtarball-mcc/task/77)
     - It should be of the form: `TG-<TAIGA_TICKET_NUMBER>` e.g. TG-77
     - Every commit message for this feature branch should start with the branch name e.g. "TG-77"
-- Set taiga.io ticket to `"In Progress"` (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a>)
-    - If taiga.io fails to change because of a fail webhook response set it manually in taiga.io
+- Set Taiga ticket to `"In Progress"` (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a> and <a href="#taiga-cheat-sheet-statuses">Cheat Sheet</a>)
+    - If Taiga fails to change because of a failed webhook response set it manually in Taiga
     - Merging to **B_devtest** is fine at this point once you are largely happy (you don't necessary have to wait for a code review)
 - When your work is ready to be reviewed (Github refers to this as a pull request in Github)
     - Click "<a href="https://help.github.com/articles/about-pull-requests/">Create Pull Request</a>" on your github branch
-        - ensure that you are comparing master (main ) with your feature branch (from your fork)
+        - Ensure that you are comparing master (main ) with your feature branch (from your fork)
         - Set the assignee
         - Set the reviewers (must be at least two people)
         - In the title remember to start with the branch name i.e. TG-<TAIGA_REF>
@@ -77,6 +77,9 @@ Useful for smaller code review / conversations
 
 ### Taiga Cheat Sheet Statuses
 
+<aside class="notice">Use the following format to change taiga in the commit message:    TF-{REF} #{SLUG} {COMMIT_MESSAGE}</aside>
+<aside class="warning">Do not use semi-colons in the commit message if you want to change the status in taiga</aside>
+
 ### Epic
 
 Name | Slug | Example | Colour
@@ -104,7 +107,7 @@ Name | Slug | Example | Colour
 --------- | ----------- | --------- |  ---------
 New | `#new` | TF-89 #new This is a commit | <div class="color-box" style="background-color: rgb(153, 153, 153);"></div>
 In progress | `#in-progress` | TF-89 #in-progress | <div class="color-box" style="background-color: rgb(114, 159, 207);"></div>
-Ready for test | `#ready-for-test` | TF-89 #ready-for-test another commit | <div class="color-box" style="background-color: rgb(245, 121, 0);"></div>
+Ready for test | `#ready-for-test` | TF-89 #ready-for-test This is another commit | <div class="color-box" style="background-color: rgb(245, 121, 0);"></div>
 Closed | `#closed` | TF-89 #closed | <div class="color-box" style="background-color: rgb(78, 154, 6);"></div>
 Needs Info | `#needs-info` | TF-89 #needs-info | <div class="color-box" style="background-color: rgb(204, 0, 0);"></div>
 
