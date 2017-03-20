@@ -625,3 +625,13 @@ html, body {
 .highlight, .highlight .w {
   background-color: $code-bg;
 }
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-color: #ccc;
+    position: relative;
+    left: 5px;
+    top: 5px;
+}
