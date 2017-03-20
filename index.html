@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Javaab Wiki</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -200,7 +200,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,9 +211,7 @@
       <img src="images/logo.png" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -222,7 +220,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
+            <li><a href='https://tree.taiga.io/project/jtarball-mcc/'> javaab - taiga.io</a></li>
             <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
         </ul>
     </div>
@@ -231,161 +229,299 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>Welcome to the Javaab&rsquo;s Wiki.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>This wiki provides developer information, guidelines and examples for use when working on this project.</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<p>The project is mainly written is python powered by a microservice type architecture.</p>
 
-<h1 id="authentication">Authentication</h1>
+          <h1 id="git-branching-protocol">Git Branching Protocol</h1>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id="git-branch-cheat-sheet">Git Branch Cheat Sheet</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<h2 id="developer-workflow">Developer Workflow</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<aside class="notice">
+We integrate <a href="https://tree.taiga.io/project/jtarball-mcc/">taiga.io</a> with Github.
+</aside>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
+<p>For more see the following:</p>
+
+<ul>
+<li><a href="https://tree.taiga.io/support/integrations/github-integration/">Github Integration</a></li>
+<li><a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">Changing Element Status via Commit Message</a></li>
+</ul>
+
+<p><hr></p>
+
+<ul>
+<li>Initially in &ldquo;Open&rdquo; status - avoid working on the ticket</li>
+<li>Ticket will move to &ldquo;Dev ready&rdquo; status when available to be picked up and worked on</li>
+<li>Pick up the ticket (assign to yourself if not already assigned)</li>
+<li>Set &ldquo;Start progress&rdquo; once work begins in earnest on the ticket
+
+<ul>
+<li>Merging to B_CI is fine at this point</li>
+</ul></li>
+<li>When work is completed, set status to &ldquo;Resolved&rdquo; with:
+
+<ul>
+<li>Resolution: &ldquo;Fixed&rdquo; (or some other suitable status as applicable);</li>
+<li>Documentation: set if required (for customers&rsquo; info, e.g. API change);</li>
+<li>&ldquo;How to Test&rdquo;: to include instructions for a tester where applicable</li>
+</ul></li>
+<li>Once in a resolved state:
+
+<ul>
+<li>Must be merged to B_CI</li>
+<li>Must be merged to B_FeatureTest</li>
+<li>Can arrange with QA for testing: status will change to &ldquo;In Test&rdquo;; or</li>
+<li>If not going through QA (i.e. testing to be done internally) status can be left unchanged</li>
+</ul></li>
+<li>Once testing is complete, status can be changed to &ldquo;Ready to Release&rdquo;</li>
+</ul>
+
 <blockquote>
 <p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
 </blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
 <pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
 <span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
 <span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 </code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
+<h3 id="branch-procedure">Branch Procedure</h3>
 
-<h3 id="http-request">HTTP Request</h3>
+<h3 id="taiga-cheat-sheet-statuses">Taiga Cheat Sheet Statuses</h3>
 
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="epic">Epic</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
+<th>Name</th>
+<th>Slug</th>
+<th>Example</th>
+<th>Colour</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>New</td>
+<td><code class="prettyprint">#new</code></td>
+<td>TF-89 #new This is a commit</td>
+<td><div class="color-box" style="background-color: rgb(153, 153, 153);"></div></td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>Ready</td>
+<td><code class="prettyprint">#ready</code></td>
+<td>TF-89 #ready</td>
+<td><div class="color-box" style="background-color: rgb(255, 138, 132);"></div></td>
+</tr>
+<tr>
+<td>In progress</td>
+<td><code class="prettyprint">#in-progress</code></td>
+<td>TF-89 #in-progress</td>
+<td><div class="color-box" style="background-color: rgb(255, 153, 0);"></div></td>
+</tr>
+<tr>
+<td>Ready for test</td>
+<td><code class="prettyprint">#ready-for-test</code></td>
+<td>TF-89 #ready-for-test another commit</td>
+<td><div class="color-box" style="background-color: rgb(252, 192, 0);"></div></td>
+</tr>
+<tr>
+<td>Done</td>
+<td><code class="prettyprint">#done</code></td>
+<td>TF-89 #done</td>
+<td><div class="color-box" style="background-color: rgb(102, 153, 0);"></div></td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="user-story">User Story</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th>Name</th>
+<th>Slug</th>
+<th>Example</th>
+<th>Colour</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>New</td>
+<td><code class="prettyprint">#new</code></td>
+<td>TF-89 #new This is a commit</td>
+<td><div class="color-box" style="background-color: rgb(153, 153, 153);"></div></td>
+</tr>
+<tr>
+<td>Ready</td>
+<td><code class="prettyprint">#ready</code></td>
+<td>TF-89 #ready</td>
+<td><div class="color-box" style="background-color: rgb(245, 121, 0);"></div></td>
+</tr>
+<tr>
+<td>In progress</td>
+<td><code class="prettyprint">#in-progress</code></td>
+<td>TF-89 #in-progress</td>
+<td><div class="color-box" style="background-color: rgb(114, 159, 207);"></div></td>
+</tr>
+<tr>
+<td>Ready for test</td>
+<td><code class="prettyprint">#ready-for-test</code></td>
+<td>TF-89 #ready-for-test another commit</td>
+<td><div class="color-box" style="background-color: rgb(78, 154, 6);"></div></td>
+</tr>
+<tr>
+<td>Done</td>
+<td><code class="prettyprint">#done</code></td>
+<td>TF-89 #done</td>
+<td><div class="color-box" style="background-color: rgb(204, 0, 0);"></div></td>
+</tr>
+<tr>
+<td>Archived</td>
+<td><code class="prettyprint">#archived</code></td>
+<td>TF-89 #archived</td>
+<td><div class="color-box" style="background-color: rgb(92, 53, 102);"></div></td>
 </tr>
 </tbody></table>
+
+<h3 id="task">Task</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Slug</th>
+<th>Example</th>
+<th>Colour</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>New</td>
+<td><code class="prettyprint">#new</code></td>
+<td>TF-89 #new This is a commit</td>
+<td><div class="color-box" style="background-color: rgb(153, 153, 153);"></div></td>
+</tr>
+<tr>
+<td>In progress</td>
+<td><code class="prettyprint">#in-progress</code></td>
+<td>TF-89 #in-progress</td>
+<td><div class="color-box" style="background-color: rgb(114, 159, 207);"></div></td>
+</tr>
+<tr>
+<td>Ready for test</td>
+<td><code class="prettyprint">#ready-for-test</code></td>
+<td>TF-89 #ready-for-test another commit</td>
+<td><div class="color-box" style="background-color: rgb(245, 121, 0);"></div></td>
+</tr>
+<tr>
+<td>Closed</td>
+<td><code class="prettyprint">#closed</code></td>
+<td>TF-89 #closed</td>
+<td><div class="color-box" style="background-color: rgb(78, 154, 6);"></div></td>
+</tr>
+<tr>
+<td>Needs Info</td>
+<td><code class="prettyprint">#needs-info</code></td>
+<td>TF-89 #needs-info</td>
+<td><div class="color-box" style="background-color: rgb(204, 0, 0);"></div></td>
+</tr>
+</tbody></table>
+
+<h3 id="issue">Issue</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Slug</th>
+<th>Example</th>
+<th>Colour</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>New</td>
+<td><code class="prettyprint">#new</code></td>
+<td>TF-89 #new This is a commit</td>
+<td><div class="color-box" style="background-color: rgb(153, 153, 153);"></div></td>
+</tr>
+<tr>
+<td>In progress</td>
+<td><code class="prettyprint">#in-progress</code></td>
+<td>TF-89 #in-progress</td>
+<td><div class="color-box" style="background-color: rgb(114, 159, 207);"></div></td>
+</tr>
+<tr>
+<td>Ready for test</td>
+<td><code class="prettyprint">#ready-for-test</code></td>
+<td>TF-89 #ready-for-test another commit</td>
+<td><div class="color-box" style="background-color: rgb(245, 121, 0);"></div></td>
+</tr>
+<tr>
+<td>Closed</td>
+<td><code class="prettyprint">#closed</code></td>
+<td>TF-89 #closed</td>
+<td><div class="color-box" style="background-color: rgb(78, 154, 6);"></div></td>
+</tr>
+<tr>
+<td>Needs Info</td>
+<td><code class="prettyprint">#needs-info</code></td>
+<td>TF-89 #needs-info</td>
+<td><div class="color-box" style="background-color: rgb(204, 0, 0);"></div></td>
+</tr>
+<tr>
+<td>Rejected</td>
+<td><code class="prettyprint">#rejected</code></td>
+<td>TF-89 #rejected</td>
+<td><div class="color-box" style="background-color: rgb(211, 215, 207);"></div></td>
+</tr>
+<tr>
+<td>Postponed</td>
+<td><code class="prettyprint">#postponed</code></td>
+<td>TF-89 #postponed</td>
+<td><div class="color-box" style="background-color: rgb(117, 80, 123);"></div></td>
+</tr>
+</tbody></table>
+<pre class="highlight plaintext"><code>Epics
+
+New new   TF-77 new a very nice commit
+
+User Story
+
+Task 
+
+Issue
+
+
+</code></pre>
+<p>Create your own feature branch from B_DevBase, in the format &lsquo;B_DEV_{JIRA-REF}&rsquo;. When work is in a stable state, it is merged into B_CI (this can be often). When work is ready for testing, you will be invited to merge your branch into B_FeatureTest. When testing is complete, your branch will be merged by the ops team into the release candidate branch. Eventually the release candidate branch will be merged into release branch.</p>
+
+<p>You must never merge B_CI or B_FeatureTest into your feature branch, or any other branches, and you may only merge your branch into the B_CI branch, unless otherwise invited.</p>
+
+<p>A quick step by step:</p>
+
+<p>1) You should checkout B_DevBase everywhere.</p>
+
+<p>2) On the modules you will be changing (eg sportsbook), you should branch for your feature(git checkout -b B_DEV_xxx). The other modules should remain on B_DevBase.</p>
+
+<p>3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO B_CI.</p>
+
+<p>4) You should never merge any branch apart from B_DevBase into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in jira for your feature.</p>
+
+<p>5) NEVER merge B_CI, B_FeatureTest anywhere.</p>
+
+<p>6) When you have finished your development, mark it as ready to test/resolved in JIRA.</p>
+
+<p>7) When the time comes, QA will ask you to merge your feature branch into B_FeatureTest and upgrade the feature test database. You should also set jira status to &lsquo;testing&rsquo;.</p>
+
+<p>8) If QA find any issues, they must be fixed on the original feature branch B_DEV_xxx and then merged into B_FeatureTest. The reason for this is the feature branch is merged into the release candidate.</p>
+
+          <h1 id="continous-integration">Continous Integration</h1>
+
+          
+          <h1 id="javaab">Javaab</h1>
+
+<h2 id="javaab-service">Javaab Service</h2>
+
+<h2 id="python-libraries">Python Libraries</h2>
+
+<h2 id="docker-services-intercommunication">Docker Services Intercommunication</h2>
 
           <h1 id="errors">Errors</h1>
 
@@ -449,9 +585,7 @@ Remember — a happy kitten is an authenticated kitten!
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
     </div>
