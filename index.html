@@ -237,8 +237,6 @@
 
           <h1 id="git-branching-protocol">Git Branching Protocol</h1>
 
-<h2 id="git-branch-cheat-sheet">Git Branch Cheat Sheet</h2>
-
 <h2 id="developer-workflow">Developer Workflow</h2>
 
 <aside class="notice">
@@ -252,43 +250,105 @@ We integrate <a href="https://tree.taiga.io/project/jtarball-mcc/">taiga.io</a> 
 <li><a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">Changing Element Status via Commit Message</a></li>
 </ul>
 
-<p><hr></p>
+<p><hr>
+<pre>
+                (TG-<REF> branched off master)
+B_Release       --------------------------------------------&gt;
+                  |                                      /
+master          ----------------------------------------|---&gt;   (master tracks B_Release, and may be updated more frequently than B_Release with new features and bug fixes)
+                   \     :   \       :              /  /        (Release candidate is taken from B_Release/master and eventually merged back in)
+B_ReleaseCandidate  \    :    -------------------------
+                      \      :       :          /               (your successfully tested branch merged to B_ReleaseCandidate)
+TG-<REF>              -+++----+----+------------                    (Update TG-<REF> from master if needed)
+                         \  \  \  \   \     \                   #### NEVER MERGE B_devtest or B_featuretest into other branches #### 
+B_devtest       -------------------|---------|--------------&gt;   (Merge your branch into Continuous Integration (B_devtest) anytime work is at a stable point)
+                                    \ x(fail) \ (pass)
+B_featuretest   --------------------------------------------&gt;   (Your branch gets merged to B_featuretest for testing)
+</pre></p>
+
+<h3 id="the-flow">The Flow</h3>
 
 <ul>
-<li>Initially in &ldquo;Open&rdquo; status - avoid working on the ticket</li>
-<li>Ticket will move to &ldquo;Dev ready&rdquo; status when available to be picked up and worked on</li>
+<li>Ticket when in <code class="prettyprint">&quot;Ready&quot;</code> status is available to be picked up and worked on. (Note: Task does not have a <code class="prettyprint">&quot;Ready&quot;</code> status)</li>
 <li>Pick up the ticket (assign to yourself if not already assigned)</li>
-<li>Set &ldquo;Start progress&rdquo; once work begins in earnest on the ticket
+<li>Create a feature branch by forking the repository under your username and creating a feature branch.
 
 <ul>
-<li>Merging to B_CI is fine at this point</li>
+<li>We basically follow the <a href="https://help.github.com/articles/github-flow/">Github Flow</a> (Possibly tag before delete branch maybe)</li>
 </ul></li>
-<li>When work is completed, set status to &ldquo;Resolved&rdquo; with:
+<li>The feature branch should be named based on the taiga.io ticket number (The ticket number should be in the top left)
 
 <ul>
-<li>Resolution: &ldquo;Fixed&rdquo; (or some other suitable status as applicable);</li>
-<li>Documentation: set if required (for customers&rsquo; info, e.g. API change);</li>
-<li>&ldquo;How to Test&rdquo;: to include instructions for a tester where applicable</li>
+<li><a href="https://tree.taiga.io/project/jtarball-mcc/task/77">Example of taiga.io ticket</a></li>
+<li>It should be of the form: <code class="prettyprint">TG-&lt;TAIGA_TICKET_NUMBER&gt;</code> e.g. TG-77</li>
+<li>Every commit message for this feature branch should start with the branch name e.g. &ldquo;TG-77&rdquo;</li>
 </ul></li>
+<li>Set taiga.io ticket to <code class="prettyprint">&quot;In Progress&quot;</code> (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a>)
+
+<ul>
+<li>If taiga.io fails to change because of a fail webhook response set it manually in taiga.io</li>
+<li>Merging to <strong>B_devtest</strong> is fine at this point once you are largely happy (you don&rsquo;t necessary have to wait for a code review)</li>
+</ul></li>
+<li>When your work is ready to be reviewed (Github refers to this as a pull request in Github)
+
+<ul>
+<li>Click &ldquo;<a href="https://help.github.com/articles/about-pull-requests/">Create Pull Request</a>&rdquo; on your github branch
+
+<ul>
+<li>ensure that you are comparing master (main ) with your feature branch (from your fork)</li>
+<li>Set the assignee</li>
+<li>Set the reviewers (must be at least two people)</li>
+<li>In the title remember to start with the branch name i.e. TG-<TAIGA_REF></li>
+<li>Add a comment and add some useful information about the change</li>
+<li>When ready, click create pull request</li>
+</ul></li>
+</ul></li>
+<li>When work is completed, reviewed and accepted by all reviewers:
+
+<ul>
 <li>Once in a resolved state:
 
 <ul>
-<li>Must be merged to B_CI</li>
-<li>Must be merged to B_FeatureTest</li>
-<li>Can arrange with QA for testing: status will change to &ldquo;In Test&rdquo;; or</li>
-<li>If not going through QA (i.e. testing to be done internally) status can be left unchanged</li>
+<li>Must be merged to <strong>B_devtest</strong></li>
+<li>Must be merged to <strong>B_featuretest</strong></li>
 </ul></li>
-<li>Once testing is complete, status can be changed to &ldquo;Ready to Release&rdquo;</li>
+<li>Set <code class="prettyprint">&quot;Ready for test&quot;</code> in taiga.io
+
+<ul>
+<li>Add #ready-for-test to the commit message (If this fails manually change it in taiga.io)</li>
+<li>Do not set to &ldquo;ready for test&rdquo; before you have merged to <strong>b_featuretest</strong> </li>
+</ul></li>
+<li>Documentation: set if required </li>
+<li>Update &ldquo;How to Test&rdquo;: to include instructions for a tester where applicable</li>
+<li>The feature must then go through QA on <strong>B_featuretest</strong>.
+
+<ul>
+<li>If &ldquo;Documentation update needed&rdquo; is set in taiga.io ensure the documentation goes through QA</li>
+</ul></li>
+</ul></li>
+<li>Once testing is complete, merge to master and status can be changed to <code class="prettyprint">&quot;Done&quot;</code> or if a Task to <code class="prettyprint">&quot;Closed&quot;</code></li>
 </ul>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h3 id="modified-flow-for-tasks-only">Modified Flow for &lsquo;Tasks&rsquo; Only</h3>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
+<aside class="warning">
+You must have a bigger feature branch for this feature (task) to be merged into.
+</aside>
+
+<aside class="notice">
+Useful for smaller code review / conversations
+</aside>
+
+<ul>
+<li>With taiga.io <code class="prettyprint">tasks</code> that are part of a complete feature (<code class="prettyprint">User Story</code>) you can follow the following <strong>MODIFIED</strong> flow:
+
+<ul>
+<li>Create the feature branch as normal based on the task</li>
+<li>Create a pull request against <strong>master</strong> repo</li>
+<li>Merge into the bigger feature branch (normally going to be the <code class="prettyprint">User Story</code> Branch)</li>
+</ul></li>
+</ul>
+
 <h3 id="branch-procedure">Branch Procedure</h3>
 
 <h3 id="taiga-cheat-sheet-statuses">Taiga Cheat Sheet Statuses</h3>
@@ -478,43 +538,45 @@ We integrate <a href="https://tree.taiga.io/project/jtarball-mcc/">taiga.io</a> 
 <td><div class="color-box" style="background-color: rgb(117, 80, 123);"></div></td>
 </tr>
 </tbody></table>
-<pre class="highlight plaintext"><code>Epics
 
-New new   TF-77 new a very nice commit
+<h3 id="quick-step-by-step">Quick Step-by-Step</h3>
 
-User Story
+<p>Create your own feature branch from <strong>master</strong>, in the format &lsquo;<strong>TG-{TAIGA-REF}</strong>&rsquo;.</p>
 
-Task 
+<p>When work is in a stable state, it is merged into <strong>B_devtest</strong> (this can be often).</p>
 
-Issue
+<p>When work is ready for testing, you will be invited to merge your branch into B_featuretest.</p>
 
+<p>When testing is complete, your branch will be merged by the ops team into the release candidate branch.</p>
 
-</code></pre>
-<p>Create your own feature branch from B_DevBase, in the format &lsquo;B_DEV_{JIRA-REF}&rsquo;. When work is in a stable state, it is merged into B_CI (this can be often). When work is ready for testing, you will be invited to merge your branch into B_FeatureTest. When testing is complete, your branch will be merged by the ops team into the release candidate branch. Eventually the release candidate branch will be merged into release branch.</p>
+<p>Eventually the release candidate branch will be merged into release branch.</p>
 
-<p>You must never merge B_CI or B_FeatureTest into your feature branch, or any other branches, and you may only merge your branch into the B_CI branch, unless otherwise invited.</p>
+<p>You must never merge <strong>B_devtest</strong> or <strong>B_featuretest</strong> into your feature branch, or any other branches, and you may only merge your branch into the <strong>B_devtest</strong> branch, unless otherwise invited.</p>
 
 <p>A quick step by step:</p>
 
-<p>1) You should checkout B_DevBase everywhere.</p>
+<p>1) You should checkout <strong>master</strong> everywhere.</p>
 
-<p>2) On the modules you will be changing (eg sportsbook), you should branch for your feature(git checkout -b B_DEV_xxx). The other modules should remain on B_DevBase.</p>
+<p>2) On the services you will be changing, you should branch for your feature (<code class="prettyprint">git checkout -b TG-xxx</code>). The other modules should remain on <strong>master</strong>.</p>
 
-<p>3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO B_CI.</p>
+<p>3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO <strong>B_devtest</strong>.</p>
 
-<p>4) You should never merge any branch apart from B_DevBase into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in jira for your feature.</p>
+<p>4) You should never merge any branch apart from <strong>master</strong> into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in taiga for your feature.</p>
 
-<p>5) NEVER merge B_CI, B_FeatureTest anywhere.</p>
+<p>5) NEVER merge <strong>B_devtest</strong>, <strong>B_featuretest</strong> anywhere.</p>
 
-<p>6) When you have finished your development, mark it as ready to test/resolved in JIRA.</p>
+<p>6) When you have finished your development, mark it as ready to test/resolved in Taiga.</p>
 
-<p>7) When the time comes, QA will ask you to merge your feature branch into B_FeatureTest and upgrade the feature test database. You should also set jira status to &lsquo;testing&rsquo;.</p>
+<p>7) When the time comes, QA will ask you to merge your feature branch into <strong>master</strong>.</p>
 
-<p>8) If QA find any issues, they must be fixed on the original feature branch B_DEV_xxx and then merged into B_FeatureTest. The reason for this is the feature branch is merged into the release candidate.</p>
+<p>8) If QA find any issues, they must be fixed on the original feature branch TG-xx and then merged into <strong>B_featuretest</strong>. The reason for this is the feature branch is merged into the release candidate.</p>
 
           <h1 id="continous-integration">Continous Integration</h1>
 
-          
+<h2 id="how-to-develop-your-code">How to Develop your code</h2>
+
+          <h1 id="microservices-architecture">Microservices Architecture</h1>
+
           <h1 id="javaab">Javaab</h1>
 
 <h2 id="javaab-service">Javaab Service</h2>
@@ -522,64 +584,6 @@ Issue
 <h2 id="python-libraries">Python Libraries</h2>
 
 <h2 id="docker-services-intercommunication">Docker Services Intercommunication</h2>
-
-          <h1 id="errors">Errors</h1>
-
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&lsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
-
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarily offline for maintenance. Please try again later.</td>
-</tr>
-</tbody></table>
 
       </div>
       <div class="dark-box">
