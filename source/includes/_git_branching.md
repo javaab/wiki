@@ -40,7 +40,7 @@ B_featuretest   -------------------------------------------->   (Your branch get
 - Set Taiga ticket to `"In Progress"` (normally but adding #in-progress to commit message <a href="https://tree.taiga.io/support/integrations/changing-elements-status-via-commit-message/">How?</a> and <a href="#taiga-cheat-sheet-statuses">Cheat Sheet</a>)
     - If Taiga fails to change because of a failed webhook response set it manually in Taiga
     - Merging to **B_devtest** is fine at this point once you are largely happy (you don't necessary have to wait for a code review)
-- When your work is ready to be reviewed (Github refers to this as a pull request in Github)
+- When your work is ready to be reviewed (Github refers to this as a <a href="https://help.github.com/articles/creating-a-pull-request/">pull request</a>)
     - Click "<a href="https://help.github.com/articles/about-pull-requests/">Create Pull Request</a>" on your github branch
         - Ensure that you are comparing master (main ) with your feature branch (from your fork)
         - Set the assignee
