@@ -15,9 +15,14 @@ jobs:
       - image: docker:1.13.1-git
     working_directory: ~/wiki
     steps:
-      # Ensure your image has git and ssh (required by git to clone via SSH) so that CircleCI can clone your repo
-      - run: apk add --update bash ruby ruby-rdoc ruby-irb ruby-io-console make gcc g++ libffi libffi-dev nodejs; gem install bundler; bundle install
       - checkout
+
+      - run: 
+          name: Install required Packages
+          command: |
+            apk add --update bash ruby ruby-rdoc ruby-irb ruby-io-console make gcc g++ libffi libffi-dev nodejs
+            gem install bundler
+            bundle install
 
       - deploy:
           name: Deploy to GitHub Pages
