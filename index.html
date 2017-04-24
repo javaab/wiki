@@ -256,14 +256,12 @@ We integrate <a href="https://tree.taiga.io/project/jtarball-mcc/">taiga.io</a> 
 B_Release       --------------------------------------------&gt;
                   |                                      /
 master          ----------------------------------------|---&gt;   (master tracks B_Release, and may be updated more frequently than B_Release with new features and bug fixes)
-                   \     :   \       :              /  /        (Release candidate is taken from B_Release/master and eventually merged back in)
+                   \     :   \       :              /  /        (Release candidate is taken from master and eventually merged into B_Release)
 B_ReleaseCandidate  \    :    -------------------------
                       \      :       :          /               (your successfully tested branch merged to B_ReleaseCandidate)
 TG-<REF>              -+++----+----+------------                    (Update TG-<REF> from master if needed)
-                         \  \  \  \   \     \                   #### NEVER MERGE B_devtest or B_featuretest into other branches #### 
-B_devtest       -------------------|---------|--------------&gt;   (Merge your branch into Continuous Integration (B_devtest) anytime work is at a stable point)
-                                    \ x(fail) \ (pass)
-B_featuretest   --------------------------------------------&gt;   (Your branch gets merged to B_featuretest for testing)
+                         \  \  \  \   \     \                   #### NEVER MERGE B_FeatureTest into other branches #### 
+B_FeatureTest   --------------------------------------------&gt;   (Your branch gets merged to B_FeatureTest for testing)
 </pre></p>
 
 <h3 id="the-flow">The Flow</h3>
@@ -287,7 +285,7 @@ B_featuretest   --------------------------------------------&gt;   (Your branch 
 
 <ul>
 <li>If Taiga fails to change because of a failed webhook response set it manually in Taiga</li>
-<li>Merging to <strong>B_devtest</strong> is fine at this point once you are largely happy (you don&rsquo;t necessary have to wait for a code review)</li>
+<li>Test locally or with help of the master environment (To be named)</li>
 </ul></li>
 <li>When your work is ready to be reviewed (Github refers to this as a <a href="https://help.github.com/articles/creating-a-pull-request/">pull request</a>)
 
@@ -309,18 +307,17 @@ B_featuretest   --------------------------------------------&gt;   (Your branch 
 <li>Once in a resolved state:
 
 <ul>
-<li>Must be merged to <strong>B_devtest</strong></li>
-<li>Must be merged to <strong>B_featuretest</strong></li>
+<li>Must be merged to <strong>B_FeatureTest</strong></li>
 </ul></li>
 <li>Set <code class="prettyprint">&quot;Ready for test&quot;</code> in taiga.io
 
 <ul>
 <li>Add #ready-for-test to the commit message (If this fails manually change it in taiga.io)</li>
-<li>Do not set to &ldquo;ready for test&rdquo; before you have merged to <strong>b_featuretest</strong> </li>
+<li>Do not set to &ldquo;ready for test&rdquo; before you have merged to <strong>b_FeatureTest</strong> </li>
 </ul></li>
 <li>Documentation: set if required </li>
 <li>Update &ldquo;How to Test&rdquo;: to include instructions for a tester where applicable</li>
-<li>The feature must then go through QA on <strong>B_featuretest</strong>.
+<li>The feature must then go through QA on <strong>B_FeatureTest</strong>.
 
 <ul>
 <li>If &ldquo;Documentation update needed&rdquo; is set in taiga.io ensure the documentation goes through QA</li>
@@ -547,15 +544,13 @@ Useful for smaller code review / conversations
 
 <p>Create your own feature branch from <strong>master</strong>, in the format &lsquo;<strong>TG-{TAIGA-REF}</strong>&rsquo;.</p>
 
-<p>When work is in a stable state, it is merged into <strong>B_devtest</strong> (this can be often).</p>
-
-<p>When work is ready for testing, you will be invited to merge your branch into B_featuretest.</p>
+<p>When work is ready for testing, you will be invited to merge your branch into B_FeatureTest.</p>
 
 <p>When testing is complete, your branch will be merged by the ops team into the release candidate branch.</p>
 
 <p>Eventually the release candidate branch will be merged into release branch.</p>
 
-<p>You must never merge <strong>B_devtest</strong> or <strong>B_featuretest</strong> into your feature branch, or any other branches, and you may only merge your branch into the <strong>B_devtest</strong> branch, unless otherwise invited.</p>
+<p>You must never merge <strong>B_FeatureTest</strong> into your feature branch, or any other branches, and you may only merge your branch into the <strong>B_FeatureTest</strong> branch, unless otherwise invited.</p>
 
 <p>A quick step by step:</p>
 
@@ -563,17 +558,17 @@ Useful for smaller code review / conversations
 
 <p>2) On the services you will be changing, you should branch for your feature (<code class="prettyprint">git checkout -b TG-xxx</code>). The other modules should remain on <strong>master</strong>.</p>
 
-<p>3) When your development is in a stable state, or you have database changes (stored procedures) you need to be shared you should merge IN TO <strong>B_devtest</strong>.</p>
+<p>3) When your development is in a stable state, or you have database changes (stored procedures) THAT need to be shared you should merge IN TO a new created feature integration branch.</p>
 
 <p>4) You should never merge any branch apart from <strong>master</strong> into your development branch. There is 1 exception to this. If your feature depends on another feature you can merge that features branch into your own. You must mark this feature as a dependency in taiga for your feature.</p>
 
-<p>5) NEVER merge <strong>B_devtest</strong>, <strong>B_featuretest</strong> anywhere.</p>
+<p>5) NEVER merge <strong>B_FeatureTest</strong> anywhere.</p>
 
 <p>6) When you have finished your development, mark it as ready to test/resolved in Taiga.</p>
 
 <p>7) When the time comes, QA will ask you to merge your feature branch into <strong>master</strong>.</p>
 
-<p>8) If QA find any issues, they must be fixed on the original feature branch TG-xx and then merged into <strong>B_featuretest</strong>. The reason for this is the feature branch is merged into the release candidate.</p>
+<p>8) If QA find any issues, they must be fixed on the original feature branch TG-xx and then merged into <strong>B_FeatureTest</strong>. The reason for this is the feature branch is merged into the release candidate.</p>
 
           <h1 id="continous-integration">Continous Integration</h1>
 
