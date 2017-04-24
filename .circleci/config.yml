@@ -20,7 +20,7 @@ jobs:
       - run: 
           name: Install required Packages
           command: |
-            apk add --update bash ruby ruby-rdoc ruby-irb ruby-io-console make gcc g++ libffi libffi-dev nodejs
+            apk add --update bash ruby ruby-dev ruby-rdoc ruby-irb ruby-io-console make gcc g++ libffi libffi-dev nodejs
             gem install bundler
             bundle install
 
